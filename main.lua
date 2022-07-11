@@ -1,3 +1,1 @@
-while true do 
-    print("yoooooo")
-end
+print("instant updater works!")

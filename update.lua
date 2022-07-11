@@ -1,52 +1,42 @@
 local arg = ...
-local targetFile = ""
-
-if(arg == nil) then
-    print("ERROR: Missing Args=Filename")
-    os.sleep(2)
-    return
+local FILENAME = "/".. arg .. ".lua"
+ 
+local cacheBreak = tostring(math.random(0, 99999))
+ 
+res, err = http.get('https://raw.githubusercontent.com/MrDorn/ccPrograms/main/' .. arg .. '.lua?breaker=' .. cacheBreak)
+if not res then error(err) end
+ 
+local code = res.readAll()
+ 
+ 
+if not(fs.exists(FILENAME))
+then
+    local newHarvest = fs.open(FILENAME, 'w')
+    newHarvest.close()
 end
-
-term.clear()
-print("Updating...")
-print("[      ]")
-os.sleep(0.5)
-term.clear()
-print("Updating...")
-print("[II    ]")
-
-local files = fs.list(".") -- list of files in directory
-term.clear()
-print("Updating...")
-print("[III   ]")
-targetFile = arg
-for i,v in pairs(files) do
-    if(v == arg) then
-        print("found")
-        os.sleep(1)
+ 
+local readFile = fs.open(FILENAME, 'r')
+local oldCode = readFile.readAll()
+readFile.close()
+ 
+local file = fs.open(FILENAME, 'w')
+ 
+if oldCode == code
+then
+    file.write(oldCode)
+    print('NO CHANGES MADE - Same Code')
+else
+    file.write(code)
+    print('WRITING UPDATE')
+    byteDiff = string.len(code) - string.len(oldCode)
+ 
+    if byteDiff >= 0
+    then
+        print(tostring(math.abs(byteDiff)) .. ' bytes added')
+    else
+        print(tostring(math.abs(byteDiff)) .. ' bytes removed')
     end
 end
-term.clear()
-print("Updating...")
-print("[IIII  ]")
-if(targetFile == "") then
-    print("ERROR: File not found")
-    os.sleep(2)
-    return
-end
-term.clear()
-print("Updating...")
-print("[IIIII ]")
-os.run({},"rm" .. " " .. targetFile .. ".lua")
-term.clear()
-print("Updating...")
-print("[IIIIII]")
-local cacheBreak = tostring(math.random(0, 99999))
-
-local request = http.get("https://raw.githubusercontent.com/MrDorn/ccPrograms/main/".. targetFile .. ".lua" .. "?breaker=" .. cacheBreak)
-local file = fs.open(targetFile .. ".lua", "w")
-file.write(request.readAll())
+ 
 file.close()
-term.clear()
-print(targetFile .. " has been successfully updated.")
-request.close()
+res.close()
