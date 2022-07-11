@@ -7,4 +7,15 @@ if(arg == nil) then
     return
 end
 
-print("Fetching Update...")
+term.clear()
+print("Updating...")
+print("[      ]")
+os.sleep(0.5)
+print("Updating...")
+print("[II    ]")
+
+local files = fs.list() -- list of files in directory
+
+for i,v in pairs(files) do
+    print(v)
+end
