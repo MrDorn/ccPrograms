@@ -19,10 +19,11 @@ local files = fs.list(".") -- list of files in directory
 term.clear()
 print("Updating...")
 print("[III   ]")
-
+targetFile = arg
 for i,v in pairs(files) do
     if(v == arg) then
-        targetFile = v
+        print("found")
+        os.sleep(1)
     end
 end
 term.clear()
@@ -36,11 +37,11 @@ end
 term.clear()
 print("Updating...")
 print("[IIIII ]")
-os.execute("rm" .. " " .. targetFile .. ".lua")
+os.run({},"rm" .. " " .. targetFile .. ".lua")
 term.clear()
 print("Updating...")
 print("[IIIIII]")
-os.execute("wget https://raw.githubusercontent.com/MrDorn/ccPrograms/main/".. targetFile .. ".lua")
+os.run({},"wget https://raw.githubusercontent.com/MrDorn/ccPrograms/main/".. targetFile .. ".lua")
 
 term.clear()
-print(filename .. " has been successfully updated.")
+print(targetFile .. " has been successfully updated.")
