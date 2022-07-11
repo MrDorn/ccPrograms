@@ -1,3 +1,3 @@
 while true do 
-    print(os.time())
+    print("yoooooo")
 end
