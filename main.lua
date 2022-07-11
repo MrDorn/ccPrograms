@@ -1,1 +1,3 @@
-print("1")
+while true do 
+    print(os.time())
+end
